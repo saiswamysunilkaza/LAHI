@@ -22,14 +22,14 @@ This example implements a customer service system for an online course platform,
 ```
 7-stateful-multi-agent/
 │
-├── customer_service_agent/         # Main agent package
+├── orchestrator_agent/         # Main agent package
 │   ├── __init__.py                 # Required for ADK discovery
 │   ├── agent.py                    # Root agent definition
 │   └── sub_agents/                 # Specialized agents
-│       ├── course_support_agent/   # Handles course content questions
-│       ├── order_agent/            # Manages order history and refunds
-│       ├── policy_agent/           # Answers policy questions
-│       └── sales_agent/            # Handles course purchases
+│       ├── unix_agent/             # Handles unix issues
+│       ├── mq_agent/               # Handles unix issues
+│       ├── db_agent/               # Handles unix issues
+│       
 │
 ├── main.py                         # Application entry point with session setup
 ├── utils.py                        # Helper functions for state management
@@ -47,11 +47,7 @@ The example uses `InMemorySessionService` to store session state:
 session_service = InMemorySessionService()
 
 def initialize_state():
-    """Initialize the session state with default values."""
-    return {
-        "user_name": "Brandon Hancock",
-        "purchased_courses": [""],
-        "interaction_history": [],
+    {
     }
 
 # Create a new session with initial state
@@ -66,9 +62,7 @@ session_service.create_session(
 ### 2. State Sharing Across Agents
 
 All agents in the system can access the same session state, enabling:
-- Root agent to track interaction history
-- Sales agent to update purchased courses
-- Course support agent to check if user has purchased specific courses
+- Root agent with be Orchestrator agent himself calling the sub agents
 - All agents to personalize responses based on user information
 
 ### 3. Multi-Agent Delegation
@@ -76,19 +70,19 @@ All agents in the system can access the same session state, enabling:
 The customer service agent routes queries to specialized sub-agents:
 
 ```python
-customer_service_agent = Agent(
-    name="customer_service",
+Orchestartor_agent = Agent(
+    name="Orchestartor_agent",
     model="gemini-2.0-flash",
-    description="Customer service agent for AI Developer Accelerator community",
+    description="Orchestartor_agent  for AI Developer Accelerator community",
     instruction="""
-    You are the primary customer service agent for the AI Developer Accelerator community.
+    You are the Orchestartor_agent for the AI Developer Accelerator community.
     Your role is to help users with their questions and direct them to the appropriate specialized agent.
     
     # ... detailed instructions ...
     
     """,
-    sub_agents=[policy_agent, sales_agent, course_support_agent, order_agent],
-    tools=[get_current_time],
+    sub_agents=[unix_agent, mq_agent, db_agent],
+    tools=[],
 )
 ```
 
@@ -144,29 +138,10 @@ python main.py
 
 This will:
 1. Initialize a new session with default state
-2. Start an interactive conversation with the customer service agent
+2. Start an interactive conversation with the orchestrator service agent
 3. Track all interactions in the session state
 4. Allow specialized agents to handle specific queries
 
-### Example Conversation Flow
-
-Try this conversation flow to test the system:
-
-1. **Start with a general query**:
-   - "What courses do you offer?"
-   - (Root agent will route to sales agent)
-
-2. **Ask about purchasing**:
-   - "I want to buy the AI Marketing Platform course"
-   - (Sales agent will process the purchase and update state)
-
-3. **Ask about course content**:
-   - "Can you tell me about the content in the AI Marketing Platform course?"
-   - (Root agent will route to course support agent, which now has access)
-
-4. **Ask about refunds**:
-   - "What's your refund policy?"
-   - (Root agent will route to policy agent)
 
 Notice how the system remembers your purchase across different specialized agents!
 
