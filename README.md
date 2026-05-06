@@ -1,6 +1,6 @@
-# Stateful Multi-Agent Systems in ADK
+# LAHI Vertex Agent: Error Orchestrator
 
-This example demonstrates how to create a stateful multi-agent system in ADK, combining the power of persistent state management with specialized agent delegation. This approach creates intelligent agent systems that remember user information across interactions while leveraging specialized domain expertise.
+This project demonstrates a stateful multi-agent system built using the Agent Development Kit (ADK) and Vertex AI. It functions as an **Error Orchestrator**, designed to intake technical error messages and delegate them to specialized sub-agents for diagnosis and resolution.
 
 ## What is a Stateful Multi-Agent System?
 
@@ -15,7 +15,7 @@ The result is a sophisticated agent ecosystem that can:
 - Provide personalized responses based on past interactions
 - Maintain context across multiple agent delegates
 
-This example implements a customer service system for an online course platform, where specialized agents handle different aspects of customer support while sharing a common state.
+This system implements a technical support orchestrator where a root agent analyzes incoming errors (like database failures or connectivity issues) and routes them to specialist agents.
 
 ## Project Structure
 
