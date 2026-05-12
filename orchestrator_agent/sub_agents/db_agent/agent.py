@@ -1,21 +1,33 @@
-from google.adk.agents import Agent
+from google.adk.agents import Agent, ParallelAgent
+from .db_sub_agents.db_conf_agent import db_conf_agent
+# Assuming db_jira_agent is defined similarly in the sibling directory
+from .db_sub_agents.db_jira_agent import db_jira_agent
 
-# Create the policy agent
-db_agent = Agent( # Variable name is already db_agent
-    name="db_agent", # Corrected agent name to match its purpose
+# Define a ParallelAgent to execute both research tasks concurrently
+db_info_gathering = ParallelAgent(
+    name="db_info_gathering",
+    description="Gathers documentation from Confluence and issue details from Jira in parallel.",
+    sub_agents=[db_conf_agent, db_jira_agent],
+)
+
+# Define the main DB Agent that orchestrates the overall workflow
+db_agent = Agent(
+    name="db_agent",
     model="gemini-2.0-flash",
-    description="Oracle database agent for handling database issues", # Clarified description
+    description="Main Database Agent for the Galileo Team",
     instruction="""
-    You are the professional oracle database expertwho acts an agent for Deutuche bank galileo project. 
-    Your role is to help orchestrator agent with solutions for database queue issues provided by orchestrator agent and respond with three different solutions which are contexually relevant.
+    You are the primary Database Agent for project Galileo. 
+    Your role is to coordinate troubleshooting by gathering data from multiple sources.
+
+    Workflow:
+    1. When a database issue or request is received, immediately call the 'db_info_gathering' agent.
+    2. This will trigger searches in both Confluence and Jira at the same time.
+    3. Once you receive the results from both sub-agents, synthesize the information.
+    4. Look for correlations between Jira tickets (recent changes/bugs) and Confluence documentation (known solutions).
+    5. if no solutions are provided as per point#4 .Provide a comprehensive summary to the user including the root cause, suggested fix, and relevant links in three different ways.
     
-        
-    When responding:
-    1. Be clear and direct and explain the root cause of the issue
-    2. Explain the reasoning behind solution
-    3. What can be done to avoid these repatative issues. 
-    4. Come up with preventive actions
-    
+
+    Always be direct and technical in your synthesis.
     """,
-    tools=[],
+    sub_agents=[db_info_gathering]
 )
