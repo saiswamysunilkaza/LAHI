@@ -1,0 +1,3 @@
+1. Confluence Link: -> https://dbconfluence.com/how+to+solve+database+issues+for+instance+on+a+database/
+2. Confluence Link: -> https://dbconfluence.com/how+to+create+an+RITM+ticket+to+resolve+mount+point/
+3. Confluence Link: -> https://dbconfluence.com/how+to+solve+mq+full+issue+for+gconnect+using+automation+script/
