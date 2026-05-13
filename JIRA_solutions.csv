@@ -1,0 +1,9 @@
+S.no,JIRA,Description,Solution,Date Solved
+1,CBHVPEMEA_12345,MQ Error: MQRC 2058 - Queue Manager Name Not Valid,"Double-check the exact name from your MQSC DIS QMGR(*) or DIS CHL(*) QMNAME output Stack Overflow.
+
+Ensure it matches exactly (including case) and is not truncated.",5/12/2023
+2,CBHVPEMEA_51523,MQRC 2053 - Queue Full,Clear the queues and then the issue will be solved,3/16/2024
+3,CBHVPEMEA_51545,ORA-01034: The Oracle instance is not available to use,"Validate the oracle instance id is correct. If so, the restart the instance and connect again",11/12/2024
+4,CBHVPEMEA_31562,ORA-1254: Service name is not registerd with listner_host port,The listner could have dynamically did not get resolved. This may be temporary.But starg the database to get the listner resolved,8/4/2023
+5,CBHVPEMEA_33621,telnet: Unable to connect to remote host: Connection refused,Check if telnet is installed first. If it is then do the ping test to validate the IP address,9/11/2025
+6,CBHVPEMEA_63614,Mountpoint doesnt exsist opt/dap/dapinfra54.de.db.com,"Try to ping the exsist in server where the mount point installed. If not, reboot the mount point",10/12/2025
